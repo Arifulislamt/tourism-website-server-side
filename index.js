@@ -59,6 +59,10 @@ app.get ('/', (req, res) => {
     res.send('Ar tourx server is running')
 });
 
+app.get('/hello', (req, res) => {
+    res.send('hello updated here')
+})
+
 app.listen(port, () => {
     console.log('Server running at port', port)
 })
