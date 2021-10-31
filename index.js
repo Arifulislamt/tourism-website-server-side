@@ -23,6 +23,7 @@ async function run(){
         const database = client.db('arTourxWebsite')
         const packageCollection = database.collection('packages');
         const travellerCollection= database.collection('travellers');
+        const bookingCollection= database.collection('bookings');
 
         //Get Packages API
         app.get('/packages', async (req, res) => {
@@ -42,6 +43,38 @@ async function run(){
             const cursor = travellerCollection.find({});
             const travellers = await cursor.toArray();
             res.send(travellers);
+        })
+
+        //Add Booking 
+        app.post("/booking", async (req, res) =>{
+            console.log(req.body);
+            const result = await bookingCollection.insertOne(req.body);
+            res.send(result);
+        })
+        //My Orders
+        app.get("/myOrder/:email", async (req, res) => {
+            const result = await bookingCollection.find({email: req.params.email}).toArray();
+            res.send(result);
+       
+        })
+
+        //My Orders Delete method
+        app.delete("/deleteOrder/:id", async(req, res) => {
+            const result = await bookingCollection.deleteOne({_id:ObjectId(req.params.id)})
+            res.send(result);
+        })
+
+        //All Orders
+        app.get("/allOrders", async(req, res) => {
+            const result = await bookingCollection.find({}).toArray();
+            res.send(result);
+            // console.log(result);
+        })
+
+        //All Orders Delete method
+        app.delete("/deleteOrders/:id", async(req, res) => {
+            const result = await bookingCollection.deleteOne({_id:ObjectId(req.params.id)})
+            res.send(result);
         })
 
       
